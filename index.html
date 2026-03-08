@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>六年级华文：虫不可貌相 闯关游戏</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #f0f7f4; display: flex; justify-content: center; padding: 20px; }
+        #game-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+        h1 { color: #2c5e50; text-align: center; }
+        .question { font-size: 1.2em; margin-bottom: 20px; color: #333; }
+        .option { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: 0.3s; text-align: left; background: none; }
+        .option:hover { background-color: #f9f9f9; border-color: #4CAF50; }
+        #score-board { text-align: center; font-weight: bold; font-size: 1.1em; color: #4CAF50; }
+        #feedback { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; }
+        .correct { background-color: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
+        .wrong { background-color: #f2dede; color: #a94442; border: 1px solid #ebccd1; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>🐛 “虫”不可貌相 知识挑战</h1>
+    <div id="score-board">得分: <span id="score">0</span></div>
+    <hr>
+    <div id="game-content">
+        <div id="question-text" class="question">正在加载题目...</div>
+        <div id="options-container"></div>
+        <div id="feedback"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "黑水虻为什么被人类称为“完美的昆虫”？",
+            options: ["A. 颜色华丽", "B. 不携带病毒、不叮咬人、不侵入居住环境", "C. 飞行速度极快"],
+            correct: 1,
+            cite: "它不仅不携带病毒，不叮咬人，更不会侵入人类的居住环境 [cite: 48, 49]"
+        },
+        {
+            q: "黑水虻如何帮助减少野生家蝇的数量？",
+            options: ["A. 捕食成年家蝇", "B. 让家蝇为了避免幼虫竞争而不在同处产卵", "C. 抢夺家蝇的领地"],
+            correct: 1,
+            cite: "家蝇为了避免它们的幼虫与黑水虻的幼虫竞争，而减少在黑水虻幼虫取食的粪堆上产卵 [cite: 57, 59]"
+        },
+        {
+            q: "【词语关】黑水虻是“____”昆虫，依靠分解有机废料生存。",
+            options: ["A. 寄生性", "B. 腐生性", "C. 捕食性"],
+            correct: 1,
+            cite: "黑水虻是腐生性昆虫 "
+        },
+        {
+            q: "【词语关】当黑水虻“____”成虫后，它就不再进食，仅靠水维持生命。",
+            options: ["A. 孵化", "B. 进化", "C. 羽化"],
+            correct: 2,
+            cite: "当它破蛹羽化成虫...羽化后的黑水虻不再进食 [cite: 100, 101, 118, 120]"
+        },
+        {
+            q: "一克黑水虻的卵在成长过程中，能啃食大约多少公斤的厨余？",
+            options: ["A. 1公斤", "B. 8公斤", "C. 28公斤"],
+            correct: 1,
+            cite: "一克黑水虻的卵长大成虫的过程，能啃食大约八公斤的厨余 "
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById('question-text').innerText = `第 ${currentQ + 1} 题：${qData.q}`;
+        const optionsDiv = document.getElementById('options-container');
+        optionsDiv.innerHTML = '';
+        document.getElementById('feedback').style.display = 'none';
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(index) {
+        const qData = questions[currentQ];
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'block';
+
+        if (index === qData.correct) {
+            score += 20;
+            document.getElementById('score').innerText = score;
+            feedback.className = 'correct';
+            feedback.innerHTML = `✅ 正确！<br><small>依据：${qData.cite}</small>`;
+        } else {
+            feedback.className = 'wrong';
+            feedback.innerHTML = `❌ 错误。正确答案是：${qData.options[qData.correct]}<br><small>依据：${qData.cite}</small>`;
+        }
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }, 3000);
+    }
+
+    function showResult() {
+        document.getElementById('game-content').innerHTML = `
+            <h2>闯关结束！</h2>
+            <p>你的最终得分是：${score} / 100</p>
+            <button onclick="location.reload()" class="option" style="text-align:center">重新挑战</button>
+        `;
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>六年级华文：虫不可貌相 闯关游戏</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background-color: #f0f7f4; display: flex; justify-content: center; padding: 20px; }
+        #game-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+        h1 { color: #2c5e50; text-align: center; }
+        .question { font-size: 1.2em; margin-bottom: 20px; color: #333; }
+        .option { display: block; width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: 0.3s; text-align: left; background: none; }
+        .option:hover { background-color: #f9f9f9; border-color: #4CAF50; }
+        #score-board { text-align: center; font-weight: bold; font-size: 1.1em; color: #4CAF50; }
+        #feedback { margin-top: 15px; padding: 10px; border-radius: 5px; display: none; }
+        .correct { background-color: #dff0d8; color: #3c763d; border: 1px solid #d6e9c6; }
+        .wrong { background-color: #f2dede; color: #a94442; border: 1px solid #ebccd1; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <h1>🐛 “虫”不可貌相 知识挑战</h1>
+    <div id="score-board">得分: <span id="score">0</span></div>
+    <hr>
+    <div id="game-content">
+        <div id="question-text" class="question">正在加载题目...</div>
+        <div id="options-container"></div>
+        <div id="feedback"></div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "黑水虻为什么被人类称为“完美的昆虫”？",
+            options: ["A. 颜色华丽", "B. 不携带病毒、不叮咬人、不侵入居住环境", "C. 飞行速度极快"],
+            correct: 1,
+            cite: "它不仅不携带病毒，不叮咬人，更不会侵入人类的居住环境 [cite: 48, 49]"
+        },
+        {
+            q: "黑水虻如何帮助减少野生家蝇的数量？",
+            options: ["A. 捕食成年家蝇", "B. 让家蝇为了避免幼虫竞争而不在同处产卵", "C. 抢夺家蝇的领地"],
+            correct: 1,
+            cite: "家蝇为了避免它们的幼虫与黑水虻的幼虫竞争，而减少在黑水虻幼虫取食的粪堆上产卵 [cite: 57, 59]"
+        },
+        {
+            q: "【词语关】黑水虻是“____”昆虫，依靠分解有机废料生存。",
+            options: ["A. 寄生性", "B. 腐生性", "C. 捕食性"],
+            correct: 1,
+            cite: "黑水虻是腐生性昆虫 "
+        },
+        {
+            q: "【词语关】当黑水虻“____”成虫后，它就不再进食，仅靠水维持生命。",
+            options: ["A. 孵化", "B. 进化", "C. 羽化"],
+            correct: 2,
+            cite: "当它破蛹羽化成虫...羽化后的黑水虻不再进食 [cite: 100, 101, 118, 120]"
+        },
+        {
+            q: "一克黑水虻的卵在成长过程中，能啃食大约多少公斤的厨余？",
+            options: ["A. 1公斤", "B. 8公斤", "C. 28公斤"],
+            correct: 1,
+            cite: "一克黑水虻的卵长大成虫的过程，能啃食大约八公斤的厨余 "
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById('question-text').innerText = `第 ${currentQ + 1} 题：${qData.q}`;
+        const optionsDiv = document.getElementById('options-container');
+        optionsDiv.innerHTML = '';
+        document.getElementById('feedback').style.display = 'none';
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(index) {
+        const qData = questions[currentQ];
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'block';
+
+        if (index === qData.correct) {
+            score += 20;
+            document.getElementById('score').innerText = score;
+            feedback.className = 'correct';
+            feedback.innerHTML = `✅ 正确！<br><small>依据：${qData.cite}</small>`;
+        } else {
+            feedback.className = 'wrong';
+            feedback.innerHTML = `❌ 错误。正确答案是：${qData.options[qData.correct]}<br><small>依据：${qData.cite}</small>`;
+        }
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }, 3000);
+    }
+
+    function showResult() {
+        document.getElementById('game-content').innerHTML = `
+            <h2>闯关结束！</h2>
+            <p>你的最终得分是：${score} / 100</p>
+            <button onclick="location.reload()" class="option" style="text-align:center">重新挑战</button>
+        `;
+    }
+
+    loadQuestion();
+</script>
+</body>
+</html>
